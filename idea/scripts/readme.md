@@ -1,36 +1,76 @@
-# Release & Deploy Scripts
+# GitHub Automation Scripts
 
-This directory is intended to house utility scripts (Bash, Python, Node.js) that assist with the release, code signing, and deployment lifecycle. 
+This directory contains utility scripts to automate GitHub Actions workflows, specifically focusing on secret management and workflow monitoring from the command line using the GitHub CLI (`gh`).
 
 ## Table of Contents
 
-1. [Version Management](#version-management)
-2. [Code Signing Utilities](#code-signing-utilities)
-3. [Asset Packaging](#asset-packaging)
-4. [Deployment Automation](#deployment-automation)
+1. [Pushing Secrets for Release Automation](#pushing-secrets-for-release-automation)
+2. [Checking Actions Result Status](#checking-actions-result-status)
 
 ---
 
-## Version Management
-Scripts to automatically bump versions across multiple manifest files (`package.json`, `Cargo.toml`, `tauri.conf.json`, `pubspec.yaml`, etc.), sync tags with git, and generate changelogs.
+## 1. Pushing Secrets for Release Automation
 
-- `bump_version.sh` - Standardizes version incrementing (major/minor/patch).
-- `generate_changelog.py` - Parses git commits to generate release notes.
+When setting up a new repository for release automation, manually entering all the required secrets (Apple certificates, Android Keystores, Telegram tokens, etc.) can be tedious and error-prone. 
 
-## Code Signing Utilities
-Helper scripts designed to be executed both locally and within CI/CD pipelines to manage certificates and signing.
+You can use the `gh` CLI to push these secrets in bulk.
 
-- `decode_apple_cert.sh` - Takes Base64 encoded `.p12` from env vars, decodes it, and adds it to a temporary keychain.
-- `sign_windows_exe.ps1` - PowerShell script to invoke `signtool.exe` with timestamp server configurations.
+### Example Script: `push_secrets.sh`
 
-## Asset Packaging
-Scripts for creating universal binaries, zipping assets, or wrapping applications.
+Create a script to automatically read your local `.env` or keystore files and push them to the repository as GitHub Actions Secrets.
 
-- `create_macos_universal.sh` - Uses `lipo` to combine `x86_64` and `aarch64` binaries into a single macOS universal app.
-- `bundle_assets.py` - Collects build artifacts, renames them by version/arch, and prepares a `.zip` or `.tar.gz` for release.
+```bash
+#!/bin/bash
+# push_secrets.sh
+# Requires GitHub CLI (gh) to be authenticated: `gh auth login`
 
-## Deployment Automation
-Scripts that interface directly with store APIs or custom servers.
+REPO="your-username/your-repo-name"
 
-- `upload_to_testflight.sh` - Uses `altool` or `xcrun` to upload `.ipa` or `.pkg` files to App Store Connect.
-- `publish_snap.sh` - Uses `snapcraft upload` to push the `.snap` file to the Snap Store channels.
+echo "Pushing Apple Signing Secrets..."
+# Base64 encode the p12 and push it
+base64 -i certs/apple_dev.p12 -o /tmp/apple_cert.b64
+gh secret set APPLE_CERTIFICATE < /tmp/apple_cert.b64 -R $REPO
+rm /tmp/apple_cert.b64
+
+# Push plain text secrets
+gh secret set APPLE_CERTIFICATE_PASSWORD --body "your-p12-password" -R $REPO
+gh secret set APPLE_SIGNING_IDENTITY --body "Developer ID Application: Keyvan Arasteh (YOUR_TEAM_ID)" -R $REPO
+gh secret set APPLE_ID --body "your-apple-id@example.com" -R $REPO
+gh secret set APPLE_PASSWORD --body "YOUR_APP_SPECIFIC_PASSWORD" -R $REPO
+gh secret set APPLE_TEAM_ID --body "YOUR_TEAM_ID" -R $REPO
+
+echo "Pushing Telegram Reporting Secrets..."
+gh secret set DEBUGGER_BOT_TOKEN --body "YOUR_BOT_TOKEN" -R $REPO
+gh secret set DEBUGGER_ADMIN_ID --body "YOUR_ADMIN_ID" -R $REPO
+
+echo "✅ All secrets pushed successfully to $REPO"
+```
+
+## 2. Checking Actions Result Status
+
+Instead of opening the browser to check if your macOS build signed correctly or if the Linux snap built successfully, you can monitor the workflow runs directly from your terminal.
+
+### Example Script: `check_actions.sh`
+
+```bash
+#!/bin/bash
+# check_actions.sh
+
+echo "📊 Recent GitHub Actions Runs:"
+# List the last 5 workflow runs with their status and ID
+gh run list --limit 5
+
+# Prompt the user if they want to watch a specific run
+read -p "Enter a Run ID to watch live (or press Enter to exit): " RUN_ID
+
+if [ ! -z "$RUN_ID" ]; then
+    echo "👀 Watching Run ID: $RUN_ID"
+    # Watch the workflow run live in the terminal
+    gh run watch $RUN_ID
+fi
+```
+
+### Useful `gh` commands for actions:
+- `gh run list`: See the status of recent builds.
+- `gh run view [run-id] --log`: Print the entire log of a specific run to the terminal (great for grepping errors).
+- `gh run watch [run-id]`: Wait for a workflow to finish, updating the status automatically.
