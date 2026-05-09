@@ -24,27 +24,37 @@ macOS Gatekeeper blocks unsigned applications to protect users. To ensure a seam
 
 ## Certificate Generation Process
 
-### 1. Certificate Signing Request (CSR)
+### Step 1. Certificate Signing Request (CSR) — 📷 NEEDS RECORDING (macOS Keychain Access)
 1. Open **Keychain Access** on your Mac.
 2. Navigate to `Certificate Assistant` → `Request Certificate from a Certificate Authority...`
 3. Enter your email and Common Name (e.g., `Keyvan Arasteh`).
 4. Select `Saved to disk` and save the `.certSigningRequest` file.
 
-### 2. Developer ID Application Certificate
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/04_keychain_csr_request.png -->
+<!-- 🎬 VIDEO PLACEHOLDER: temp/04_keychain_csr_request_video.webp -->
+
+### Step 2. Developer ID Application Certificate — ✅ RECORDED
 1. Go to the **Apple Developer Portal** → `Certificates, IDs & Profiles` → `Certificates`.
 2. Click `+` to create a new certificate and select **Developer ID Application**.
 3. Upload the CSR file generated in Step 1.
 4. Download the resulting `.cer` file.
 5. Double-click the `.cer` file to import it into your macOS Keychain.
 
-### 3. Export to `.p12`
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/01_apple_developer_select_cert.png -->
+<!-- Video:      temp/01_apple_developer_video.webp -->
+
+### Step 3. Export to `.p12` — 📷 NEEDS RECORDING (macOS Keychain Access)
 1. Open **Keychain Access** and go to `My Certificates`.
 2. Locate the imported certificate, usually named: `Developer ID Application: Your Name (YOUR_TEAM_ID)`.
 3. Right-click and select **Export**.
 4. Choose the `.p12` Personal Information Exchange format.
 5. Set a strong password (this will become your `APPLE_CERTIFICATE_PASSWORD` secret).
 
-### 4. Base64 Encoding
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/05_keychain_export_p12.png -->
+<!-- 🎬 VIDEO PLACEHOLDER: temp/05_keychain_export_p12_video.webp -->
+
+### Step 4. Base64 Encoding — 📷 NEEDS RECORDING (Terminal)
 To use the certificate in GitHub Actions, it must be Base64 encoded as a single string.
 
 ```bash
@@ -54,6 +64,14 @@ base64 -i "certificate.p12" | pbcopy
 # Linux (disable line wrapping)
 base64 -w 0 "certificate.p12" > /tmp/cert.b64
 ```
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/06_terminal_base64_encode.png -->
+
+---
+
+## App-Specific Password — ✅ RECORDED
+
+> 📄 **See:** [cupertino-apple-password.md](cupertino-apple-password.md) for full step-by-step guide with screenshots and video.
 
 ---
 
@@ -71,6 +89,47 @@ Map your Apple Developer credentials to your repository secrets exactly as follo
 | `APPLE_TEAM_ID` | Your 10-character Team ID |
 
 > ⚠️ **Best Practice:** Generate a unique App-Specific Password for each repository/project rather than sharing one across all pipelines.
+
+### Adding `APPLE_CERTIFICATE` to GitHub Secrets — 📷 NEEDS RECORDING
+1. Click **New repository secret**.
+2. Name: `APPLE_CERTIFICATE`, Secret: paste the Base64-encoded `.p12` string.
+3. Click **Add secret**.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/07_github_apple_certificate.png -->
+<!-- 🎬 VIDEO PLACEHOLDER: temp/07_github_apple_certificate_video.webp -->
+
+### Adding `APPLE_CERTIFICATE_PASSWORD` to GitHub Secrets — 📷 NEEDS RECORDING
+1. Click **New repository secret**.
+2. Name: `APPLE_CERTIFICATE_PASSWORD`, Secret: the password set during `.p12` export.
+3. Click **Add secret**.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/08_github_apple_cert_password.png -->
+
+### Adding `APPLE_SIGNING_IDENTITY` to GitHub Secrets — 📷 NEEDS RECORDING
+1. Click **New repository secret**.
+2. Name: `APPLE_SIGNING_IDENTITY`, Secret: the exact certificate Common Name from Keychain (e.g., `Developer ID Application: Keyvan Arasteh (TEAMID)`).
+3. Click **Add secret**.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/09_github_apple_signing_identity.png -->
+
+### Adding `APPLE_ID` to GitHub Secrets — 📷 NEEDS RECORDING
+1. Click **New repository secret**.
+2. Name: `APPLE_ID`, Secret: your Apple Developer Account email.
+3. Click **Add secret**.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/10_github_apple_id.png -->
+
+### Adding `APPLE_TEAM_ID` to GitHub Secrets — 📷 NEEDS RECORDING
+1. Click **New repository secret**.
+2. Name: `APPLE_TEAM_ID`, Secret: your 10-character Team ID from the Apple Developer Membership page.
+3. Click **Add secret**.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/11_github_apple_team_id.png -->
+
+### All Secrets Configured — 📷 NEEDS RECORDING
+Take a final screenshot showing all 6 secrets listed in the repository settings.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/12_github_all_secrets_overview.png -->
 
 ---
 
@@ -99,6 +158,9 @@ When using the `tauri-apps/tauri-action`, passing these environment variables al
 4. Packages into a `.dmg`.
 5. Uploads the `.dmg` to Apple for Notarization using `xcrun notarytool`.
 6. Staples the approved ticket to the DMG using `xcrun stapler`.
+
+<!-- 🖼️ IMAGE PLACEHOLDER: temp/13_github_workflow_yaml.png -->
+<!-- 🎬 VIDEO PLACEHOLDER: temp/13_github_workflow_video.webp -->
 
 ---
 
