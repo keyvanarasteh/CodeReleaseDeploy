@@ -27,8 +27,8 @@ Create a script to automatically read your local `.env` or keystore files and pu
 REPO="your-username/your-repo-name"
 
 echo "Pushing Apple Signing Secrets..."
-# Base64 encode the p12 and push it
-base64 -i certs/apple_dev.p12 -o /tmp/apple_cert.b64
+# Base64 encode the p12 (without line wraps) and push it
+base64 -w 0 certs/apple_dev.p12 > /tmp/apple_cert.b64
 gh secret set APPLE_CERTIFICATE < /tmp/apple_cert.b64 -R $REPO
 rm /tmp/apple_cert.b64
 
