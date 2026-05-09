@@ -69,9 +69,21 @@ base64 -w 0 "certificate.p12" > /tmp/cert.b64
 
 ---
 
+## Apple ID (Developer Email) — ✅ RECORDED
+
+> 📄 **See:** [cupertino-apple-id.md](cupertino-apple-id.md) for full step-by-step guide with screenshots and video.
+
+---
+
 ## App-Specific Password — ✅ RECORDED
 
 > 📄 **See:** [cupertino-apple-password.md](cupertino-apple-password.md) for full step-by-step guide with screenshots and video.
+
+---
+
+## Certificate Lifecycle — 📷 PARTIALLY RECORDED
+
+> 📄 **See:** [cupertino-apple-certificate.md](cupertino-apple-certificate.md) for full step-by-step guide.
 
 ---
 
@@ -90,27 +102,32 @@ Map your Apple Developer credentials to your repository secrets exactly as follo
 
 > ⚠️ **Best Practice:** Generate a unique App-Specific Password for each repository/project rather than sharing one across all pipelines.
 
-### Adding `APPLE_CERTIFICATE` to GitHub Secrets — 📷 NEEDS RECORDING
+### Adding `APPLE_CERTIFICATE` to GitHub Secrets — ✅ RECORDED
 1. Click **New repository secret**.
 2. Name: `APPLE_CERTIFICATE`, Secret: paste the Base64-encoded `.p12` string.
 3. Click **Add secret**.
 
-<!-- 🖼️ IMAGE PLACEHOLDER: temp/07_github_apple_certificate.png -->
-<!-- 🎬 VIDEO PLACEHOLDER: temp/07_github_apple_certificate_video.webp -->
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/09_github_apple_certificate_filled.png ✅ -->
+<!-- Video:      temp/09_github_apple_certificate_video.webp ✅ -->
 
-### Adding `APPLE_CERTIFICATE_PASSWORD` to GitHub Secrets — 📷 NEEDS RECORDING
+### Adding `APPLE_CERTIFICATE_PASSWORD` to GitHub Secrets — ✅ RECORDED
 1. Click **New repository secret**.
 2. Name: `APPLE_CERTIFICATE_PASSWORD`, Secret: the password set during `.p12` export.
 3. Click **Add secret**.
 
-<!-- 🖼️ IMAGE PLACEHOLDER: temp/08_github_apple_cert_password.png -->
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/10_github_apple_cert_password_filled.png ✅ -->
+<!-- Video:      temp/10_github_apple_cert_password_video.webp ✅ -->
 
-### Adding `APPLE_SIGNING_IDENTITY` to GitHub Secrets — 📷 NEEDS RECORDING
+### Adding `APPLE_SIGNING_IDENTITY` to GitHub Secrets — ✅ RECORDED
 1. Click **New repository secret**.
-2. Name: `APPLE_SIGNING_IDENTITY`, Secret: the exact certificate Common Name from Keychain (e.g., `Developer ID Application: Keyvan Arasteh (TEAMID)`).
+2. Name: `APPLE_SIGNING_IDENTITY`, Secret: the exact certificate Common Name from Keychain.
 3. Click **Add secret**.
 
-<!-- 🖼️ IMAGE PLACEHOLDER: temp/09_github_apple_signing_identity.png -->
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/11_github_apple_signing_identity_filled.png ✅ -->
+<!-- Video:      temp/11_github_apple_signing_identity_video.webp ✅ -->
 
 ### Adding `APPLE_ID` to GitHub Secrets — 📷 NEEDS RECORDING
 1. Click **New repository secret**.
@@ -119,17 +136,20 @@ Map your Apple Developer credentials to your repository secrets exactly as follo
 
 <!-- 🖼️ IMAGE PLACEHOLDER: temp/10_github_apple_id.png -->
 
-### Adding `APPLE_TEAM_ID` to GitHub Secrets — 📷 NEEDS RECORDING
+### Adding `APPLE_TEAM_ID` to GitHub Secrets — ✅ RECORDED
 1. Click **New repository secret**.
-2. Name: `APPLE_TEAM_ID`, Secret: your 10-character Team ID from the Apple Developer Membership page.
+2. Name: `APPLE_TEAM_ID`, Secret: your 10-character Team ID.
 3. Click **Add secret**.
 
-<!-- 🖼️ IMAGE PLACEHOLDER: temp/11_github_apple_team_id.png -->
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/04_apple_developer_membership.png ✅ -->
+<!-- Video:      temp/04_apple_team_id_video.webp ✅ -->
 
-### All Secrets Configured — 📷 NEEDS RECORDING
-Take a final screenshot showing all 6 secrets listed in the repository settings.
+### All Secrets Configured — ✅ RECORDED
+Take a final screenshot showing all required secrets listed in the repository settings.
 
-<!-- 🖼️ IMAGE PLACEHOLDER: temp/12_github_all_secrets_overview.png -->
+<!-- 🖼️ ASSETS -->
+<!-- Screenshot: temp/12_github_all_secrets_overview.png ✅ -->
 
 ---
 
