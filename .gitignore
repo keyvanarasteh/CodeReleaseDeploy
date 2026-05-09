@@ -1,0 +1,6 @@
+target
+node_modules
+temp
+logs
+__pycache__
+*.db
