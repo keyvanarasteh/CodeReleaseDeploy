@@ -5,7 +5,8 @@ This directory contains utility scripts to automate GitHub Actions workflows, sp
 ## Table of Contents
 
 1. [Pushing Secrets for Release Automation](#pushing-secrets-for-release-automation)
-2. [Checking Actions Result Status](#checking-actions-result-status)
+3. [Framework-Specific Build & Release](#framework-specific-build--release)
+4. [Checking Actions Result Status](#checking-actions-result-status)
 
 ---
 
@@ -46,7 +47,21 @@ gh secret set DEBUGGER_ADMIN_ID --body "YOUR_ADMIN_ID" -R $REPO
 echo "✅ All secrets pushed successfully to $REPO"
 ```
 
-## 2. Checking Actions Result Status
+## 3. Framework-Specific Build & Release
+
+We have documented the build, packaging, and release commands for various popular frameworks. See the individual documents for specific script templates:
+
+- 🦀 **[Rust (Native Binaries)](rust.md)**
+- 🖥️ **[Tauri v2 (Desktop Apps)](tauri.v2.md)**
+- ⚡ **[SvelteKit (Node Server)](sveltekit.md)**
+- 📄 **[SvelteKit (Static Adapter)](sveltekit-static.md)**
+- ⚛️ **[React (Node/Express Server)](react.md)**
+- ⚛️ **[React (Static Build)](react-static.md)**
+- 🔺 **[Next.js](nextjs.md)**
+
+---
+
+## 4. Checking Actions Result Status
 
 Instead of opening the browser to check if your macOS build signed correctly or if the Linux snap built successfully, you can monitor the workflow runs directly from your terminal.
 
