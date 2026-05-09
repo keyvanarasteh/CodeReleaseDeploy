@@ -2,6 +2,7 @@
 
 - [ ] `tauri.v2.md`
 - [ ] `rust.md`
+- [ ] `crates-io.md`
 - [ ] `sveltekit-static.md`
 - [ ] `sveltekit.md`
 - [ ] `react-static.md`

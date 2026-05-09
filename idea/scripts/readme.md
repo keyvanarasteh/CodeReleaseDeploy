@@ -52,6 +52,7 @@ echo "✅ All secrets pushed successfully to $REPO"
 We have documented the build, packaging, and release commands for various popular frameworks. See the individual documents for specific script templates:
 
 - 🦀 **[Rust (Native Binaries)](rust.md)**
+- 📦 **[Rust Crates (crates.io)](crates-io.md)**
 - 🖥️ **[Tauri v2 (Desktop Apps)](tauri.v2.md)**
 - ⚡ **[SvelteKit (Node Server)](sveltekit.md)**
 - 📄 **[SvelteKit (Static Adapter)](sveltekit-static.md)**
